@@ -15,23 +15,37 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure full history for proper tagging
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '18.x'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci # Faster and more reliable than npm install
 
       - name: Build and Release Electron app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run electron:build
 
+      - name: Ensure build directory exists
+        run: mkdir -p dist-electron
+
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-build
           path: dist-electron/*
+          retention-days: 30 # Store artifacts for 30 days
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref }}
+          files: dist-electron/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
