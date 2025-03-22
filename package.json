@@ -1,7 +1,7 @@
 {
   "name": "mondoro",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
