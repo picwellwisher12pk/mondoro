@@ -53,13 +53,27 @@
     "directories": {
       "output": "dist-electron"
     },
-    "win": {
-      "target": "nsis",
-      "publisherName": "Mondoro"
-    },
     "publish": {
       "provider": "github",
       "releaseType": "release"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "electron/icons/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "electron/icons/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "electron/icons/icon.png"
     }
   }
 }
